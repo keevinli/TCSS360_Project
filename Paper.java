@@ -1,38 +1,52 @@
+package TCSS360;
+
+import java.io.Serializable;
 import java.util.Date;
 
-
-public class Paper {
-	public String path;
-	public String author;
-	public Date submitDate;
+public class Paper implements Serializable {
 	
-	public Paper(String thePath, String theAuthor, Date theSubmitDate){
-		path = thePath;
-		author = theAuthor;
-		submitDate = theSubmitDate;
+	private String myPath;
+	private String myAuthor;
+	private String mySubmitDate;
+	private String myTitle;
+	
+	public Paper(String thePath, String theAuthor, String theDate,
+			     String theTitle) {
+		myPath = thePath;
+		myAuthor = theAuthor;
+		mySubmitDate = theDate;
+		myTitle = theTitle;
 	}
 	
 	public String getPath() {
-		return path;
+		return myPath;
 	}
 
 	public void setPath(String path) {
-		this.path = path;
+		this.myPath = path;
 	}
 
 	public String getAuthor() {
-		return author;
+		return myAuthor;
 	}
 
 	public void setAuthor(String author) {
-		this.author = author;
+		this.myAuthor = author;
 	}
 
-	public Date getSubmitDate() {
-		return submitDate;
+	public String getSubmitDate() {
+		return mySubmitDate;
 	}
 
-	public void setSubmitDate(Date submitDate) {
-		this.submitDate = submitDate;
+	public void setSubmitDate(String submitDate) {
+		this.mySubmitDate = submitDate;
+	}
+	
+	public String getTitle(){
+		return myTitle;
+	}
+	
+	public void setTitle(String theTitle) {
+		myTitle = theTitle;
 	}
 }

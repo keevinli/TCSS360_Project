@@ -1,57 +1,67 @@
+package TCSS360;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public enum Status {
-	//Paper status
-	SUBMITTED, REVIEWING, RECOMMED, PUBLISHED
-}
+public class Manuscript extends Paper implements Serializable {
 
-public class Manuscript extends Paper {
-	private String title;
-	private List<Review> reviewList;
-	private List<String> reviwerList;
-	private int recommendation;
-	private Status status;
+	private int myRecommendation;
+	private Status myStatus;
+	private List<ReviewForm> myReviewFormList;
+	private List<User> myReviewerList;
+	private List<RecommendationForm> myRecomFormList;
 	
-	public Manuscript(String thePath, String theAuthor,
-					Date theSubmitDate, String theTitle, Status theStatus) {
-		super(thePath, theAuthor, theSubmitDate);
-		title = theTitle;
-		status = theStatus;
+
+	 public static enum Status {
+		 //Paper status
+		 SUBMITTED, REVIEWING, RECOMMED, PUBLISHED;
+	 }
+
+	public Manuscript(String thePath, String theAuthor, String theSubmitDate,
+			String theTitle) {
+		super(thePath, theAuthor, theSubmitDate, theTitle);
+		myStatus = Status.SUBMITTED;
 	}
 
 	public Status getStatus() {
-		return status;
+		return myStatus;
 	}
 
 	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+		this.myStatus = status;
 	}
 
 	public int getRecommendation() {
-		return recommendation;
+		return myRecommendation;
 	}
 
 	public void setRecommendation(int recommendation) {
-		this.recommendation = recommendation;
+		this.myRecommendation = recommendation;
 	}
 
-	public List<Review> getReviewList() {
-		// Iterating the list then print out the list
-		return null;
-	}
-
-	public List<String> getReviwerList() {
-		// Iterating the list then print out everything
-		return null;
+	public List<ReviewForm> getReviewList() {
+		return myReviewFormList;
 	}
 	
+	public void addReviewForm(ReviewForm theReview){
+		myReviewFormList.add(theReview);
+	}
+
+	public List<User> getReviwerList() {
+		// Iterating the list then print out everything
+		return myReviewerList;
+	}
+	
+	public void addReviewer(User theReviewer){
+		myReviewerList.add(theReviewer);
+	}
+	
+	public List<RecommendationForm> getRecomForm() {
+		return myRecomFormList;
+	}
+	
+	public void addRecommendation (RecommendationForm theRecom){
+		myRecomFormList.add(theRecom);
+	}
 }
