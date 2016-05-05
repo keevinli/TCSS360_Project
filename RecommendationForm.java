@@ -1,7 +1,6 @@
 package TCSS360;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 public class RecommendationForm extends Paper implements Serializable{

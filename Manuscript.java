@@ -1,7 +1,6 @@
 package TCSS360;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 public class Manuscript extends Paper implements Serializable {
@@ -15,7 +14,7 @@ public class Manuscript extends Paper implements Serializable {
 
 	 public static enum Status {
 		 //Paper status
-		 SUBMITTED, REVIEWING, RECOMMED, PUBLISHED;
+		 SUBMITTED, RECOMMENDED, ACCEPTED, REJECTED;
 	 }
 
 	public Manuscript(String thePath, String theAuthor, String theSubmitDate,

@@ -8,8 +8,8 @@ public class Conference {
 	private String endingDate;
 	private String paperDeadline;
 	private String reviewDeadline;
-	private List<Paper> allSubPaperList;
-	private List<String> subProChairList;
+	private List<Manuscript> submittedManuscriptList;
+	private List<User> subProChairList;
 	
 	public Conference(String theName, User theProgramChair,
 					String theStartingDate, String theEndingDate, 
@@ -70,11 +70,11 @@ public class Conference {
 		this.reviewDeadline = reviewDeadline;
 	}
 	
-	public List<Paper> getAllSubPaperList() {
-		return allSubPaperList;
+	public List<Manuscript> getAllSubPaperList() {
+		return submittedManuscriptList;
 	}
 	
-	public List<String> getSubProChairList() {
+	public List<User> getSubProChairList() {
 		return subProChairList;
 	}
 

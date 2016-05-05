@@ -12,6 +12,7 @@ public class User {
 	private List<Roles> myRoles;
 	private List<Manuscript> myManuscriptsToReview;
 	private List<ReviewForm> myReviews;
+	private List<User> myReviewers;
 	//private List<Conference> mySubprogChairsConferences;
 	
 	public User(String theName, String theLoginName, String theEmail) {
@@ -99,6 +100,13 @@ public class User {
 		this.myReviews.remove(theReview);
 	}
 
+	public List<User> getMyReviewers() {
+		return myReviewers;
+	}
+
+	public void addMyReviewers(User theReviewers) {
+		this.myReviewers.add(theReviewers);
+	}
 
 //	public List<Conference> getMySubprogChairsConferences() {
 //		return mySubprogChairsConferences;

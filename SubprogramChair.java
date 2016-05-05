@@ -1,7 +1,6 @@
 package TCSS360;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class SubprogramChair extends Roles implements Serializable {
 	public SubprogramChair(Conference theConference) {
@@ -9,7 +8,7 @@ public class SubprogramChair extends Roles implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	private List<Reviewer> myReviewers;
+
 	
 	
 //	private void assignReviewer(User theReviewer) {

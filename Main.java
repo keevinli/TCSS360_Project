@@ -7,15 +7,15 @@ import java.util.Scanner;
 
 public class Main implements Serializable {
 	public static User currentUser;// = new User("Adam", "adamgroup5", "adam@adam.com");
+	public static Conference currentConference;
 
 	private static Scanner userInput = new Scanner(System.in);
 	
 	public static void main(String[] theargs) {
-		Conference currentConference;
+		
 		boolean finished = false;
 		boolean exit = false;
 		
-		int input;
 		List<User> userList = new ArrayList<User>();
 		userList.add(new User("adam", "adamlogin", "adam@adam.com"));
 		
@@ -25,79 +25,102 @@ public class Main implements Serializable {
 		conferenceList.add(new Conference("Conf3", userList.get(0), "start date", "end date", "paper deadline", "rev deadline"));
 		userList.get(0).addMyRole(new SubprogramChair(conferenceList.get(0)));
 		
-		while(!finished) {
+
+		//First menu
+		registerLoginMenu(finished, exit, userList, conferenceList);
+		
+		//display options for current conference based on roles.	
+
+		
+	}
+	
+	public static void registerLoginMenu(boolean theFinishedFlag, boolean theExitFlag, List<User> theUserList, List<Conference> theConferenceList) {
 			System.out.println("Select an option: \n1.Login\n2.Register\n3.Exit");
-			input = userInput.nextInt();
+			int input = userInput.nextInt();
+			
 			switch(input) {
-				case 1:
-					login(userList);
-					finished = true;
+				case 1:				
+					theFinishedFlag = login(theUserList);
 					break;
 				case 2:
-					userList.add(register());
+					theUserList.add(register());
 					break;
 				case 3:
 					exit();
-					finished = true;
-					exit = true;
+					theExitFlag = true;
 					break;
 				default:
 					System.out.println("Invalid selection, returning to last menu");
 					break;
 			}
-		}
-		finished = false;
-		while (!finished && !exit) {
-			int count = 0;
-			System.out.println("Select a conference: ");
 			
-			for(Conference c : conferenceList) {
+			if(!theFinishedFlag && !theExitFlag) {
+				registerLoginMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+			} else if (!theExitFlag){
+				theFinishedFlag = false;
+				selectConferenceMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+			}
+	}
+	
+	public static void selectConferenceMenu(boolean theFinishedFlag, boolean theExitFlag, List<User> theUserList, List<Conference> theConferenceList) {
+			int count = 0;
+			System.out.println("Select a conference or option: ");
+			
+			for(Conference c : theConferenceList) {
 				count++;
 				System.out.println(count + ". " + c.getName());
 			}
-			input = userInput.nextInt();
+			System.out.println("B. Back\nE. Exit");
+			
+			int input = userInput.nextInt();
 			System.out.println("\nConference " + input + " selected.");
-			currentConference = conferenceList.get(input - 1);
-			finished = true;
-		}
-		finished = false;
-		//display options for current conference based on roles.	
-		while(!finished && !exit) {
-			System.out.println("\nSelect an option:\nM. Submit Manuscript\nE. Exit");
+			
+			if(input > 0) {
+			currentConference = theConferenceList.get(input - 1);			
+			//call next menu
+			selectRoleMenu(theExitFlag, theFinishedFlag, theUserList, theConferenceList);
+			} else {
+				exit();
+			}
+	}
+	
+	public static void selectRoleMenu(boolean theFinishedFlag, boolean theExitFlag, List<User> theUserList, List<Conference> theConferenceList) {
+			System.out.println("\nSelect an option:\nM. Submit Manuscript");
 			
 			for(Roles r : currentUser.getMyRoles()) {
 				//System.out.println(r.getClass().getSimpleName());
-				if(r.getClass().getSimpleName().equals("Author")) {
+				if(r.getClass().getSimpleName().equals("Author") && r.getConference() == currentConference) {
 					System.out.println("A. Author Options");
 				}
-				if(r.getClass().getSimpleName().equals("ProgramChair")) {
+				if(r.getClass().getSimpleName().equals("ProgramChair") && r.getConference() == currentConference) {
 					System.out.println("P. Program Chair Options");
 				}
-				if(r.getClass().getSimpleName().equals("Reviewer")) {
+				if(r.getClass().getSimpleName().equals("Reviewer") && r.getConference() == currentConference) {
 					System.out.println("R. Reviewer Options");
 				}
-				if(r.getClass().getSimpleName().equals("SubprogramChair")) {
+				if(r.getClass().getSimpleName().equals("SubprogramChair") && r.getConference() == currentConference) {
 					System.out.println("S. Subprogram Chair Options");
-				}
-				
+				}	
 			}
+			
+			System.out.println("B. Back\nE. Exit");
 			
 			String roleChoiceInput = userInput.next();
 			switch(roleChoiceInput) {
 				case "E":
-					exit = true;
-					finished = true;
+					exit();
+					theExitFlag = true;
+					theFinishedFlag = true;
 					break;
 				case "S": 
-					finished = true;
+					theFinishedFlag = true;
 					break;
 				default: 
 					System.out.println("Invalid selection, returning to last menu");
 					break;
 			}
-		}
-		
 	}
+	
 	
 	public static boolean hasRole(Conference theConference, Roles theRole) {
 		boolean result = false;
@@ -113,13 +136,12 @@ public class Main implements Serializable {
 		return result;
 	}
 	
-	public static void login(List<User> userList) {
+	public static boolean login(List<User> userList) {
 		System.out.print("Enter your username: ");
 		String input = userInput.next();
 		boolean success = false;
 		
 		for(User u : userList) {
-			System.out.println(u.getMyLoginName());
 			if(u.getMyLoginName().equals(input)) {
 				currentUser = u;
 				success = true;				
@@ -127,8 +149,10 @@ public class Main implements Serializable {
 		}
 		if (success) {
 			System.out.println("\nSuccessfully logged in as " + currentUser.getMyLoginName());
+			return true;
 		} else {
 			System.out.println("\nNo such user exists, returning to last menu.");
+			return false;
 		}
 	}
 	
