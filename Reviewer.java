@@ -31,6 +31,8 @@ public class Reviewer extends Roles implements Serializable {
 		}
 		if (isAllowed) {
 			Main.currentUser.addReview(r);
+			theManuscript.addReviewForm(r);
+			System.out.println("Review " + r.getTitle() + " submitted.");
 		}
 		else {
 			System.out.println("Not assigned this Paper to review...");

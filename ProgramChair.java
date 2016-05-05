@@ -1,7 +1,8 @@
 package TCSS360;
 
 import java.io.Serializable;
-import java.util.List;
+
+import TCSS360.Manuscript.Status;
 
 public class ProgramChair extends Roles implements Serializable {
 
@@ -11,40 +12,38 @@ public class ProgramChair extends Roles implements Serializable {
 	}
 	
 	
-//	private void viewAllManuscripts(Conference theConference) {
-//		System.out.println("List of manuscripts: ");
-//		List<Manuscript> manuscripts = theConference.getManuscripts();
-//		for (Manuscript m : manuscripts) {
-//			System.out.println(m.toString());
-//		}
-//	}
-//	
-//	private void acceptRejectManuscript(Manuscript theManuscript, char theDecision) {
-//		theManuscript.setDecision(theDecision);
-//	}
-//	
-//	private void viewAssignedSubProgManuscripts(Conference theConference) {
-//		List<User> users = Conference.getUsers();
-//		List<Roles> roles = Conference.getRoles();
-//		List<Manuscript> manuscripts;
-//		
-//		for(User u : users) {
-//			for (Roles r : roles) {
-//				if(r.getClass().equals(SubprogramChair.class)) {
-//					manuscripts = u.getMyManuscripts();
-//				}
-//			}
-//		}
-//	}
-//	
-//	private void assignSubProgManuscript(User theUser, Manuscript theManuscript) {
-//		List<Roles> roles = theUser.getMyRoles();
-//		for(Roles r : roles) {
-//			if(r.getClass().equals(Reviewer.class)){
-//				theUser.addMyManuscript(theManuscript);
-//			}
-//		}
-//		
-//	}
+	public void viewAllManuscripts() {	
+		for (Manuscript m : Main.currentConference.getManuscripts()) {
+			System.out.println(m.getTitle());
+		}
+	}
+	
+	public void rejectManuscript(Manuscript theManuscript){
+		theManuscript.setStatus(Status.REJECTED);
+		System.out.println(theManuscript.getTitle() + " by " + theManuscript.getAuthor() + " Rejected.");
+		
+	}
+	
+	public void acceptManuscript(Manuscript theManuscript){
+		theManuscript.setStatus(Status.ACCEPTED);
+		System.out.println(theManuscript.getTitle() + " by " + theManuscript.getAuthor() + " Accepted.");
+		
+	}
+	
+	
+	public void viewAssignedSubProgManuscripts() {	
+		for(User u : Main.currentConference.getSubProChairList()) {
+			System.out.println(u.getMyName() + ":");
+			for (Manuscript m: u.getMyManuscriptsToReview()) {
+				System.out.println("\t" + m.getTitle());
+			}
+		}
+	}
+	
+	public void assignSubProgManuscript(User theUser, Manuscript theManuscript) {
+		theUser.addSubProgManuscript(theManuscript);
+		System.out.println(theManuscript.getTitle() + " assigned to " + theUser.getMyName());
+		
+	}
 
 }

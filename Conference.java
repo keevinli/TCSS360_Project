@@ -1,4 +1,5 @@
 package TCSS360;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Conference {
@@ -8,7 +9,7 @@ public class Conference {
 	private String endingDate;
 	private String paperDeadline;
 	private String reviewDeadline;
-	private List<Manuscript> submittedManuscriptList;
+	private List<Manuscript> mySubmittedManuscriptList;
 	private List<User> subProChairList;
 	
 	public Conference(String theName, User theProgramChair,
@@ -20,6 +21,8 @@ public class Conference {
 		this.endingDate = theEndingDate;
 		this.paperDeadline = thePaperDeadline;
 		this.reviewDeadline = theReviewDeadline;
+		this.mySubmittedManuscriptList = new ArrayList<Manuscript>();
+		this.subProChairList = new ArrayList<User>();
 	}
 
 	public String getName() {
@@ -70,8 +73,15 @@ public class Conference {
 		this.reviewDeadline = reviewDeadline;
 	}
 	
-	public List<Manuscript> getAllSubPaperList() {
-		return submittedManuscriptList;
+	public void addManuscript(Manuscript theManuscript) {
+		this.mySubmittedManuscriptList.add(theManuscript);
+	}
+	public void removeManuscript(Manuscript theManuscript) {
+		this.mySubmittedManuscriptList.remove(theManuscript);
+	}
+	
+	public List<Manuscript> getManuscripts() {
+		return mySubmittedManuscriptList;
 	}
 	
 	public List<User> getSubProChairList() {

@@ -63,4 +63,23 @@ public class Manuscript extends Paper implements Serializable {
 	public void addRecommendation (RecommendationForm theRecom){
 		myRecomFormList.add(theRecom);
 	}
+	
+	@Override
+	public boolean equals(Object theOther) {
+		
+		boolean equal = false;
+		Manuscript other;
+		
+		if ((theOther instanceof Manuscript)){
+			other = (Manuscript) theOther;
+			if (this.getAuthor().equals(other.getAuthor()) && this.getTitle().equals(other.getTitle())) {
+				equal = true;
+				
+			}
+
+		}
+		return equal;
+		
+	}
+
 }

@@ -1,6 +1,11 @@
 package TCSS360;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import TCSS360.Manuscript.Status;
 
 public class SubprogramChair extends Roles implements Serializable {
 	public SubprogramChair(Conference theConference) {
@@ -9,31 +14,27 @@ public class SubprogramChair extends Roles implements Serializable {
 	}
 
 
+	public void assignReviewerManuscript(User theUser, Manuscript theManuscript) {
+		//Get instance of Reviewer 	
+		theUser.addMyManuscriptsToReview(theManuscript);
+		System.out.println(theManuscript.getTitle() + " assigned to " + theUser.getMyName());
+
+	}
 	
 	
-//	private void assignReviewer(User theReviewer) {
-//		Roles rev = new Reviewer();
-//		theReviewer.addMyRole(rev);
-//		myReviewers.add((Reviewer)rev);
-//	}
-//	
-//	private void assignReviewerManuscript(User theUser, Manuscript theManuscript) {
-//		//Get instance of Reviewer 
-//		List<Roles> roles = theUser.getMyRoles();
-//		
-//		
-//		for(Roles r : roles) {
-//			if(r.getClass().equals(Reviewer.class)){
-//				theUser.addMyManuscript(theManuscript);
-//			}
-//		}
-//		
-//	}
-//	
-//	private void submitRecomendation(Manuscript theManuscript, int score) {
-//		RecommendationForm form = new RecommendationForm(score);
-//		//theManuscript.addRecomendation(form);
-//	}
+	public void submitRecomendation(Manuscript theManuscript, int score, String thePath, String theTitle) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String date = dateFormat.format(cal.getTime());
+		
+		
+		
+		RecommendationForm form = new RecommendationForm(thePath, Main.currentUser.getMyName(), date, theTitle, score);
+		theManuscript.addRecommendation(form);
+		theManuscript.setStatus(Status.RECOMMENDED);
+		
+		System.out.println("Reccommendation Form for " + theManuscript.getTitle() + " submitted.");
+	}
 
 	
 	

@@ -1,6 +1,9 @@
 package TCSS360;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class User {
@@ -11,6 +14,7 @@ public class User {
 	private List<Manuscript> myAuthoredManuscripts;
 	private List<Roles> myRoles;
 	private List<Manuscript> myManuscriptsToReview;
+	private List<Manuscript> mySubProgManuscripts;
 	private List<ReviewForm> myReviews;
 	private List<User> myReviewers;
 	//private List<Conference> mySubprogChairsConferences;
@@ -24,6 +28,7 @@ public class User {
 		this.myRoles = new ArrayList<Roles>();
 		this.myManuscriptsToReview = new ArrayList<Manuscript>();
 		this.myReviews = new ArrayList<ReviewForm>();
+		this.mySubProgManuscripts = new ArrayList<Manuscript>();
 		//this.mySubprogChairsConferences = theSubprogChairsConferences;
 	}
 
@@ -53,6 +58,10 @@ public class User {
 
 	public List<Manuscript> getMyManuscripts() {
 		return myAuthoredManuscripts;
+	}
+	
+	public void addSubProgManuscript(Manuscript theManuscript) {
+		this.mySubProgManuscripts.add(theManuscript);
 	}
 
 	public void addMyManuscript(Manuscript theManuscript) {
@@ -107,7 +116,33 @@ public class User {
 	public void addMyReviewers(User theReviewers) {
 		this.myReviewers.add(theReviewers);
 	}
+	
+	public void submitManuscript(final String thePath, String theTitle) {
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String date = dateFormat.format(cal.getTime());
+		
+		Manuscript newPaper = new Manuscript(thePath, Main.currentUser.getMyName(), date, theTitle);
+		
+		Main.currentUser.addMyManuscript(newPaper);
+		Main.currentConference.addManuscript(newPaper);
+		if(!Main.hasRole(Main.currentConference, Main.AUTHOR)) {
+			Main.currentUser.addMyRole(new Author(Main.currentConference));
+		}
+		System.out.println(newPaper.getTitle() + " submitted to Conference " + Main.currentConference.getName());
+	}
 
+	public Author findAuthorRole() {
+		Author AuthorRole = null;
+		for(Roles r : this.getMyRoles()) {
+			if(r instanceof Author) {
+				AuthorRole = (Author) r;
+			}
+		}
+		return AuthorRole;
+	}
+	
 //	public List<Conference> getMySubprogChairsConferences() {
 //		return mySubprogChairsConferences;
 //	}

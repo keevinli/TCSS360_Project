@@ -1,8 +1,9 @@
 package TCSS360;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Roles implements Serializable {
 	/**
@@ -13,14 +14,6 @@ public class Roles implements Serializable {
 	
 	public Roles (Conference theConference) {
 		myConference = theConference;
-	}
-	
-	public void submitManuscript(final String thePath, final String theAuthor,
-			String theDate, String theTitle, List<Manuscript> theList) {
-		
-		Manuscript newPaper = new Manuscript(thePath, theAuthor, theDate, theTitle);
-		// Adds the new paper object to the list that the User holds.
-		theList.add(newPaper);
 	}
 	
 	public void setConference(Conference theConference) {
