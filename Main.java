@@ -1,6 +1,12 @@
 package TCSS360;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,6 +28,8 @@ public class Main implements Serializable {
 	public static final Reviewer REVIEWER = new Reviewer(null);
 	public static final SubprogramChair SUBPROGRAM_CHAIR = new SubprogramChair(null);
 	public static final ProgramChair PROGRAM_CHAIR = new ProgramChair(null);
+	
+	private static boolean initialized = false;
 	private static List<Conference> conferenceList;
 	private static List<User> userList;
 
@@ -29,20 +37,35 @@ public class Main implements Serializable {
 	
 	public static void main(String[] theargs) {
 		
-		boolean initialized = false;
+		
 		boolean finished = false;
 		boolean exit = false;
 		
-		if(!initialized) {
-			initialized = setup();
-		}
+
 
 		try {
+			FileInputStream fileIn = new FileInputStream("userList.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			userList = (ArrayList<User>) in.readObject();
 			
-		} catch(IOException e) {
+			fileIn = new FileInputStream("conferenceList.ser");
+			in = new ObjectInputStream(fileIn);
+			conferenceList = (ArrayList<Conference>) in.readObject();
+			
+			fileIn = new FileInputStream("initialized.ser");
+			DataInputStream dataIn = new DataInputStream(fileIn);
+			initialized = (boolean) dataIn.readBoolean();
+			
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		if(!initialized) {
+			initialized = setup();
+		}
+		
 		//First menu
 		registerLoginMenu(finished, exit, userList, conferenceList);
 		
@@ -544,5 +567,24 @@ public class Main implements Serializable {
 	
 	public static void exit() {
 		System.out.println("You selected exit.");
+		try {
+			FileOutputStream fileOut = new FileOutputStream("userList.ser");
+			ObjectOutputStream output = new ObjectOutputStream(fileOut);
+			output.writeObject(userList);
+			
+			fileOut = new FileOutputStream("conferenceList.ser");
+			output = new ObjectOutputStream(fileOut);
+			output.writeObject(conferenceList);
+			
+			fileOut = new FileOutputStream("initialized.ser");
+			DataOutputStream dataOutput = new DataOutputStream(fileOut);
+			dataOutput.writeBoolean(initialized);
+			
+			output.close();
+			fileOut.close();
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
