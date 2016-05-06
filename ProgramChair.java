@@ -13,8 +13,10 @@ public class ProgramChair extends Roles implements Serializable {
 	
 	
 	public void viewAllManuscripts() {	
+		int count = 1;
 		for (Manuscript m : Main.currentConference.getManuscripts()) {
-			System.out.println(m.getTitle());
+			System.out.println(count + ". " + m.getTitle());
+			count++;
 		}
 	}
 	
@@ -33,9 +35,11 @@ public class ProgramChair extends Roles implements Serializable {
 	
 	public void viewAssignedSubProgManuscripts() {	
 		for(User u : Main.currentConference.getSubProChairList()) {
-			System.out.println(u.getMyName() + ":");
-			for (Manuscript m: u.getMyManuscriptsToReview()) {
-				System.out.println("\t" + m.getTitle());
+			if(!u.getSubProgManuscript().isEmpty()) {
+				System.out.println(u.getMyName() + ":");
+				for (Manuscript m: u.getSubProgManuscript()) {
+					System.out.println("\t" + m.getTitle());
+				}
 			}
 		}
 	}

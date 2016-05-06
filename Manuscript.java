@@ -1,11 +1,11 @@
 package TCSS360;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Manuscript extends Paper implements Serializable {
 
-	private int myRecommendation;
 	private Status myStatus;
 	private List<ReviewForm> myReviewFormList;
 	private List<User> myReviewerList;
@@ -21,6 +21,9 @@ public class Manuscript extends Paper implements Serializable {
 			String theTitle) {
 		super(thePath, theAuthor, theSubmitDate, theTitle);
 		myStatus = Status.SUBMITTED;
+		myRecomFormList = new ArrayList<RecommendationForm>();
+		myReviewerList = new ArrayList<User>();
+		myReviewFormList = new ArrayList<ReviewForm>();
 	}
 
 	public Status getStatus() {
@@ -29,14 +32,6 @@ public class Manuscript extends Paper implements Serializable {
 
 	public void setStatus(Status status) {
 		this.myStatus = status;
-	}
-
-	public int getRecommendation() {
-		return myRecommendation;
-	}
-
-	public void setRecommendation(int recommendation) {
-		this.myRecommendation = recommendation;
 	}
 
 	public List<ReviewForm> getReviewList() {
@@ -56,7 +51,7 @@ public class Manuscript extends Paper implements Serializable {
 		myReviewerList.add(theReviewer);
 	}
 	
-	public List<RecommendationForm> getRecomForm() {
+	public List<RecommendationForm> getRecomFormList() {
 		return myRecomFormList;
 	}
 	

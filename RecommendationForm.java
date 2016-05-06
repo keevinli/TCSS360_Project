@@ -2,7 +2,12 @@ package TCSS360;
 
 import java.io.Serializable;
 
-
+/**
+ * One of the subclass of Roles called Author.
+ * 
+ * @author Andrew Merz, Adam Marr, Bernabe Guzman, Bincheng Li
+ * @version 1.0 5/5/2016
+ */
 public class RecommendationForm extends Paper implements Serializable{
 	/**
 	 * 

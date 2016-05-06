@@ -23,7 +23,7 @@ public class Reviewer extends Roles implements Serializable {
 		String date = dateFormat.format(cal.getTime());
 
 		ReviewForm r = new ReviewForm(thePath, theAuthor, date, theTitle, Main.currentUser);
-		
+
 		for(Manuscript m: Main.currentUser.getMyManuscriptsToReview()) {
 			if (m.getTitle() == theManuscript.getTitle() && m.getAuthor() == theManuscript.getAuthor()) {
 				isAllowed = true;
@@ -42,10 +42,12 @@ public class Reviewer extends Roles implements Serializable {
 	
 	public void viewAssignedManuscripts() {
 		// Prints all the manuscripts out from a list provided by user.
-		for(Manuscript m: Main.currentUser.getMyManuscriptsToReview()) {
-			System.out.println(m.getTitle());
-		}
+		int count = 1;
 		
+		for(Manuscript m: Main.currentUser.getMyManuscriptsToReview()) {
+			System.out.println(count + ". " + m.getTitle());
+		}
+		System.out.println();
 	}
 	
 	public String toString() {

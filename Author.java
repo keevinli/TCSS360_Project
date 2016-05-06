@@ -2,12 +2,26 @@ package TCSS360;
 
 import java.util.List;
 
+/**
+ * One of the subclass of Roles called Author.
+ * 
+ * @author Andrew Merz, Adam Marr, Bernabe Guzman, Bincheng Li
+ * @version 1.0 5/5/2016
+ */
 public class Author extends Roles {
-
+	
+	/**
+	 * Constructor for author class
+	 * 
+	 * @param theConference A conference
+	 */
 	public Author(Conference theConference) {
 		super(theConference);
 	}
 	
+	/**
+	 * View all your submitted manuscript.
+	 */
 	public void viewAuthorSubManuscript() {
 		List<Manuscript> manuList = Main.currentUser.getMyManuscripts();
 		int i = 1;
@@ -18,6 +32,12 @@ public class Author extends Roles {
 		}
 	}
 	
+	/**
+	 * Update one of your submitted manuscript.
+	 * 
+	 * @param theManuscript The submitted manuscript. 
+	 * @param theConferences List of conference
+	 */
 	public void updateAuthoredManuscript(Manuscript theManuscript, List<Conference> theConferences) {
 		boolean found = false;
 		
@@ -43,6 +63,12 @@ public class Author extends Roles {
 		
 	}
 	
+	/**
+	 * Unsubmit one of your manuscript. 
+	 * 
+	 * @param theManuscript The manuscript you want to remove.
+	 * @param theConferences A list of conference.
+	 */
 	public void unsubmitManuscript(Manuscript theManuscript, List<Conference> theConferences) {
 		for(Conference c: theConferences) {
 			if (c.getManuscripts().contains(theManuscript)) {
