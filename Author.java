@@ -1,5 +1,6 @@
 package TCSS360;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,8 +9,13 @@ import java.util.List;
  * @author Andrew Merz, Adam Marr, Bernabe Guzman, Bincheng Li
  * @version 1.0 5/5/2016
  */
-public class Author extends Roles {
+public class Author extends Roles implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3594012237429715507L;
+
 	/**
 	 * Constructor for author class
 	 * 

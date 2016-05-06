@@ -8,6 +8,15 @@ import java.util.Calendar;
 import TCSS360.Manuscript.Status;
 
 public class SubprogramChair extends Roles implements Serializable {
+
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 560617491878906874L;
+
+
 	public SubprogramChair(Conference theConference) {
 		super(theConference);
 		// TODO Auto-generated constructor stub
@@ -16,8 +25,18 @@ public class SubprogramChair extends Roles implements Serializable {
 
 	public void assignReviewerManuscript(User theUser, Manuscript theManuscript) {
 		//Get instance of Reviewer 	
-		theUser.addMyManuscriptsToReview(theManuscript);
-		System.out.println(theManuscript.getTitle() + " assigned to " + theUser.getMyName());
+		
+		if(!theUser.getMyName().equals(theManuscript.getAuthor())) {
+			if(theUser.getMyManuscriptsToReview().size() <= 3) {
+				theUser.addMyManuscriptsToReview(theManuscript);
+				System.out.println(theManuscript.getTitle() + " assigned to " + theUser.getMyName());
+			} else {
+				System.out.println("Failed to assign review to " + theUser.getMyName() + " because of review limit");
+			}
+		} else {
+			System.out.println("Cannot assign a review to the author of the manuscript");
+		}
+		
 
 	}
 	

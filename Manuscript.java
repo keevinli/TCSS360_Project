@@ -6,6 +6,10 @@ import java.util.List;
 
 public class Manuscript extends Paper implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8730353916258807055L;
 	private Status myStatus;
 	private List<ReviewForm> myReviewFormList;
 	private List<User> myReviewerList;

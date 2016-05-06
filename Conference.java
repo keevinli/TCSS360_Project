@@ -1,5 +1,7 @@
 package TCSS360;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -8,7 +10,11 @@ import java.util.List;
  * @author Andrew Merz, Adam Marr, Bernabe Guzman, Bincheng Li
  * @version 1.0 5/5/2016
  */
-public class Conference {
+public class Conference implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2834762961375246670L;
 	private String Name;
 	private User programChair;
 	private String startingDate;
@@ -17,6 +23,8 @@ public class Conference {
 	private String reviewDeadline;
 	private List<Manuscript> mySubmittedManuscriptList;
 	private List<User> subProChairList;
+	private Calendar myReviewDeadline;
+	private Calendar myPaperDeadline;
 	
 	/**
 	 * Constructor for conference class.
@@ -30,7 +38,7 @@ public class Conference {
 	 */
 	public Conference(String theName, User theProgramChair,
 					String theStartingDate, String theEndingDate, 
-					String thePaperDeadline,String theReviewDeadline){
+					String thePaperDeadline,String theReviewDeadline, int reviewDeadlineOffset, int paperDeadlineOffset){
 		this.Name = theName;
 		this.programChair = theProgramChair;
 		this.startingDate = theStartingDate;
@@ -39,6 +47,11 @@ public class Conference {
 		this.reviewDeadline = theReviewDeadline;
 		this.mySubmittedManuscriptList = new ArrayList<Manuscript>();
 		this.subProChairList = new ArrayList<User>();
+		
+		myReviewDeadline = Calendar.getInstance();
+		myPaperDeadline = Calendar.getInstance();
+		myReviewDeadline.add(Calendar.DATE, reviewDeadlineOffset);
+		myPaperDeadline.add(Calendar.DATE, paperDeadlineOffset);
 	}
 	
 	/**
@@ -165,6 +178,14 @@ public class Conference {
 	
 	public void addSubProChairList(User theUser) {
 		subProChairList.add(theUser);
+	}
+	
+	public Calendar getPaperDeadlineDate() {
+		return myPaperDeadline;
+	}
+	
+	public Calendar getReviewDeadlineDate() {
+		return myReviewDeadline;
 	}
 
 	@Override

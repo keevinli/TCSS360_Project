@@ -1,14 +1,20 @@
 package TCSS360;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Paper implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8190150644233894201L;
 	private String myPath;
 	private String myAuthor;
 	private String mySubmitDate;
 	private String myTitle;
+	private Calendar mySubmittedDate;
 	
 	public Paper(String thePath, String theAuthor, String theDate,
 			     String theTitle) {
@@ -16,6 +22,9 @@ public class Paper implements Serializable {
 		myAuthor = theAuthor;
 		mySubmitDate = theDate;
 		myTitle = theTitle;
+		new Date();
+		Calendar.getInstance();
+		mySubmittedDate = Calendar.getInstance();
 	}
 	
 	public String getPath() {
@@ -49,4 +58,5 @@ public class Paper implements Serializable {
 	public void setTitle(String theTitle) {
 		myTitle = theTitle;
 	}
+
 }

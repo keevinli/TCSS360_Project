@@ -12,6 +12,10 @@ import java.util.Scanner;
 import TCSS360.Manuscript.Status;
 
 public class Main implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7648819537622791186L;
 	public static User currentUser;// = new User("Adam", "adamgroup5", "adam@adam.com");
 	public static Conference currentConference;
 	public static final Author AUTHOR = new Author(null);
@@ -33,6 +37,11 @@ public class Main implements Serializable {
 			initialized = setup();
 		}
 
+		try {
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 
 		//First menu
 		registerLoginMenu(finished, exit, userList, conferenceList);
@@ -43,7 +52,6 @@ public class Main implements Serializable {
 	}
 	
 	private static boolean setup() {
-		// TODO Auto-generated method stub
 		userList = new ArrayList<User>();
 		userList.add(new User("adam", "adamlogin", "adam@adam.com"));
 		userList.add(new User("kevin", "kevinl", "kevin@adam.com"));
@@ -51,17 +59,18 @@ public class Main implements Serializable {
 		
 		
 		conferenceList = new ArrayList<Conference>();
-		conferenceList.add(new Conference("Conf1", userList.get(0), "start date", "end date", "paper deadline", "rev deadline"));
-		conferenceList.add(new Conference("Conf2", userList.get(0), "start date", "end date", "paper deadline", "rev deadline"));
-		conferenceList.add(new Conference("Conf3", userList.get(0), "start date", "end date", "paper deadline", "rev deadline"));
+		conferenceList.add(new Conference("Conf1", userList.get(0), "start date", "end date", "paper deadline", "rev deadline", 60, 30));
+		conferenceList.add(new Conference("Conf2", userList.get(0), "start date", "end date", "paper deadline", "rev deadline", 0, 30));
+		conferenceList.add(new Conference("Conf3", userList.get(0), "start date", "end date", "paper deadline", "rev deadline", 60, 30));
 		userList.get(0).addMyRole(new SubprogramChair(conferenceList.get(0)));
 		userList.get(0).addMyRole(new Author(conferenceList.get(0)));
 		userList.get(0).addMyRole(new ProgramChair(conferenceList.get(0)));
 		userList.get(0).addMyRole(new Reviewer(conferenceList.get(0)));
+		userList.get(0).addMyRole(new Reviewer(conferenceList.get(1)));
 		
 		userList.get(1).addMyRole(new SubprogramChair(conferenceList.get(0)));
 		userList.get(1).addMyRole(new Reviewer(conferenceList.get(0)));
-		
+		userList.get(1).addMyRole(new SubprogramChair(conferenceList.get(1)));
 		
 		currentUser = userList.get(0);
 		currentConference = conferenceList.get(0);
@@ -76,6 +85,13 @@ public class Main implements Serializable {
 		ProgramChair initProgramChair = currentUser.findProgramChairRole();
 		initProgramChair.assignSubProgManuscript(userList.get(1), currentConference.getManuscripts().get(0));
 		initProgramChair.assignSubProgManuscript(userList.get(1), currentConference.getManuscripts().get(2));
+		initSubprogramChair.assignReviewerManuscript(userList.get(1), currentConference.getManuscripts().get(0));
+		
+		currentConference = conferenceList.get(1);
+		currentUser = userList.get(1);
+		currentUser.submitManuscript("path1", "Manuscript 1");
+		initSubprogramChair.assignReviewerManuscript(userList.get(0), currentConference.getManuscripts().get(0));
+		
 		initSubprogramChair.assignReviewerManuscript(userList.get(1), currentConference.getManuscripts().get(0));
 		
 		currentUser = userList.get(1);
@@ -214,40 +230,51 @@ public class Main implements Serializable {
 		System.out.println("3. Back");
 		System.out.println("4. Exit");
 		
-		int input = userInput.nextInt();
+		String input = userInput.next();
 		int count = 1;
 		Author tempAuthor = currentUser.findAuthorRole();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String date = dateFormat.format(cal.getTime());	
 		
-		switch(input) {
+		switch(Integer.parseInt(input)) {
 			case 1:
 				//Update Manuscript
-				System.out.println("Select a manuscript to update: ");
+				System.out.println("Select a manuscript to update or command: ");
 				for(Manuscript m : currentUser.getMyManuscripts()) {
 					System.out.println(count + ". " + m.getTitle());
 					count++;
 				}
-				input = userInput.nextInt();
-				Manuscript tempManuscript = currentUser.getMyManuscripts().get(input - 1);			
-				System.out.println("Enter the path of the updated manuscript");
-				String path = userInput.next();
-		
-				Manuscript updatedManuscript = new Manuscript(path, currentUser.getMyName(), date, tempManuscript.getTitle());
-				tempAuthor.updateAuthoredManuscript(updatedManuscript, theConferenceList);
-				authorMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+				System.out.println("B. Back");
+				input = userInput.next();
+				if(!input.equals("B")) {
+					Manuscript tempManuscript = currentUser.getMyManuscripts().get(Integer.parseInt(input) - 1);			
+					System.out.println("Enter the path of the updated manuscript");
+					String path = userInput.next();
+			
+					Manuscript updatedManuscript = new Manuscript(path, currentUser.getMyName(), date, tempManuscript.getTitle());
+					tempAuthor.updateAuthoredManuscript(updatedManuscript, theConferenceList);
+					authorMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+				} else {
+					authorMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+				}
 				break;
 			case 2:
 				//Unsubmit Manuscript
+				System.out.println("Select a manuscript to unsubmit or command: ");
 				for(Manuscript m : currentUser.getMyManuscripts()) {
 					System.out.println(count + ". " + m.getTitle());
 					count++;
 				}			
-				input = userInput.nextInt();			
-				Manuscript removedManuscript = currentUser.getMyManuscripts().get(input - 1);
-				tempAuthor.unsubmitManuscript(removedManuscript, theConferenceList);	
-				authorMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+				System.out.println("B. Back");
+				input = userInput.next();	
+				if(!input.equals("B")) {
+					Manuscript removedManuscript = currentUser.getMyManuscripts().get(Integer.parseInt(input) - 1);
+					tempAuthor.unsubmitManuscript(removedManuscript, theConferenceList);	
+					authorMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+				} else {
+					authorMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
+				}
 				break;
 			case 3: 
 				selectRoleMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
@@ -287,7 +314,7 @@ public class Main implements Serializable {
 					if(m.getStatus() == Status.RECOMMENDED) {
 						reccomendedList.add(m);
 						System.out.println(count + ". " + m.getTitle());
-						System.out.print("\tReccomendations: ");
+						System.out.print("\tRecommendations: ");
 						for(RecommendationForm rf : m.getRecomFormList()) {
 							System.out.print(rf.getScore() + ", ");
 						}
@@ -299,7 +326,7 @@ public class Main implements Serializable {
 				selectedManuscript = reccomendedList.get(input - 1);
 				
 				
-				System.out.println("1. Aceept");
+				System.out.println("1. Accept");
 				System.out.println("2. Reject");
 				System.out.println("3. Back");
 				System.out.println("4. Exit");
@@ -403,7 +430,7 @@ public class Main implements Serializable {
 	public static void subprogramChairMenu(boolean theFinishedFlag, boolean theExitFlag, List<User> theUserList, List<Conference> theConferenceList) {
 		System.out.println("Select an option: ");
 		System.out.println("1. Assign a manuscript to a reviewer");
-		System.out.println("2. Submit a reccomendation for a manuscript");
+		System.out.println("2. Submit a recommendation for a manuscript");
 		System.out.println("3. Back");
 		System.out.println("4. Exit");
 		
@@ -445,19 +472,19 @@ public class Main implements Serializable {
 			subprogramChairMenu(theFinishedFlag, theExitFlag, theUserList, theConferenceList);
 			break;
 		case 2:
-			System.out.println("Select a manuscript to assign a reccomendation");
+			System.out.println("Select a manuscript to assign a recommendation");
 			for(Manuscript m : currentUser.getSubProgManuscript()) {
 				System.out.println(count + ". " + m.getTitle());
 				count++;
 			}
 			input = userInput.nextInt();
 			selectedManuscript = currentUser.getSubProgManuscript().get(input - 1);
-			System.out.println("Enter the path to the reccomendation form");
+			System.out.println("Enter the path to the recommendation form");
 			userInput.nextLine();
 			String path = userInput.nextLine();
-			System.out.println("Enter a reccomendation score");
+			System.out.println("Enter a recommendation score");
 			int score = userInput.nextInt();
-			System.out.println("Enter a title for the reccomendation form");
+			System.out.println("Enter a title for the recommendation form");
 			userInput.nextLine();
 			String title = userInput.nextLine();
 			tempSubprogramChair.submitRecomendation(selectedManuscript, score, path, title);

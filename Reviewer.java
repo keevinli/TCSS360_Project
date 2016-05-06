@@ -8,9 +8,9 @@ import java.util.Calendar;
 public class Reviewer extends Roles implements Serializable {	
 
 	/**
-	 * Serial Version ID
+	 * 
 	 */
-	private static final long serialVersionUID = -2180778346255065805L;
+	private static final long serialVersionUID = 2085432913222156308L;
 
 	public Reviewer(Conference theConference) {
 		super(theConference);
@@ -23,19 +23,22 @@ public class Reviewer extends Roles implements Serializable {
 		String date = dateFormat.format(cal.getTime());
 
 		ReviewForm r = new ReviewForm(thePath, theAuthor, date, theTitle, Main.currentUser);
-
-		for(Manuscript m: Main.currentUser.getMyManuscriptsToReview()) {
-			if (m.getTitle() == theManuscript.getTitle() && m.getAuthor() == theManuscript.getAuthor()) {
-				isAllowed = true;
+		if(cal.before(Main.currentConference.getReviewDeadlineDate())) {
+			for(Manuscript m: Main.currentUser.getMyManuscriptsToReview()) {
+				if (m.getTitle() == theManuscript.getTitle() && m.getAuthor() == theManuscript.getAuthor()) {
+					isAllowed = true;
+				}
 			}
-		}
-		if (isAllowed) {
-			Main.currentUser.addReview(r);
-			theManuscript.addReviewForm(r);
-			System.out.println("Review " + r.getTitle() + " submitted.");
-		}
-		else {
-			System.out.println("Not assigned this Paper to review...");
+			if (isAllowed) {
+				Main.currentUser.addReview(r);
+				theManuscript.addReviewForm(r);
+				System.out.println("Review " + r.getTitle() + " submitted.");
+			}
+			else {
+				System.out.println("Not assigned this Paper to review...");
+			}
+		} else {
+			System.out.println("Submission failed review deadline has passed.");
 		}
 		
 	}

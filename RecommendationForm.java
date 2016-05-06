@@ -9,10 +9,11 @@ import java.io.Serializable;
  * @version 1.0 5/5/2016
  */
 public class RecommendationForm extends Paper implements Serializable{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3321573126528462233L;
+	private static final long serialVersionUID = -6800776639147002957L;
 	private int myScore; 
 	
 	public RecommendationForm(String thePath, String theAuthor, String theSubmitDate, String theTitle, int theScore) {

@@ -1,5 +1,6 @@
 package TCSS360;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +13,12 @@ import java.util.List;
  * @author Andrew Merz, Adam Marr, Bernabe Guzman, Bincheng Li
  * @version 1.0 5/5/2016
  */
-public class User {
+public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5949934155104871686L;
+
 	/**
 	 * User name.
 	 */
@@ -201,12 +207,18 @@ public class User {
 		
 		Manuscript newPaper = new Manuscript(thePath, Main.currentUser.getMyName(), date, theTitle);
 		
-		Main.currentUser.addMyManuscript(newPaper);
-		Main.currentConference.addManuscript(newPaper);
-		if(!Main.hasRole(Main.currentConference, Main.AUTHOR, Main.currentUser)) {
-			Main.currentUser.addMyRole(new Author(Main.currentConference));
+		if(cal.before(Main.currentConference.getPaperDeadlineDate())) {
+			Main.currentUser.addMyManuscript(newPaper);
+			Main.currentConference.addManuscript(newPaper);
+			if(!Main.hasRole(Main.currentConference, Main.AUTHOR, Main.currentUser)) {
+				Main.currentUser.addMyRole(new Author(Main.currentConference));
+			}
+			System.out.println(newPaper.getTitle() + " submitted to Conference " + Main.currentConference.getName());
+		} else {
+			System.out.println("The deadline for manuscript submission has passed.\n");
 		}
-		System.out.println(newPaper.getTitle() + " submitted to Conference " + Main.currentConference.getName());
+		
+
 	}
 
 	public Author findAuthorRole() {

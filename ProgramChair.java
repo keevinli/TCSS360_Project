@@ -6,6 +6,11 @@ import TCSS360.Manuscript.Status;
 
 public class ProgramChair extends Roles implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4555961000972804977L;
+
 	public ProgramChair(Conference theConference) {
 		super(theConference);
 		// TODO Auto-generated constructor stub
@@ -45,8 +50,16 @@ public class ProgramChair extends Roles implements Serializable {
 	}
 	
 	public void assignSubProgManuscript(User theUser, Manuscript theManuscript) {
-		theUser.addSubProgManuscript(theManuscript);
-		System.out.println(theManuscript.getTitle() + " assigned to " + theUser.getMyName());
+		if(!theUser.getMyName().equals(theManuscript.getAuthor())) {
+			if(theUser.getSubProgManuscript().size() <= 3) {
+				theUser.addSubProgManuscript(theManuscript);
+				System.out.println(theManuscript.getTitle() + " assigned to " + theUser.getMyName());
+			} else {
+				System.out.println("Failed to assign manuscript to " + theUser.getMyName() + " because of manuscript limit");
+			}
+		} else {
+			System.out.println("Cannot assign a manuscript to the author");
+		}
 		
 	}
 
